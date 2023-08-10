@@ -12,6 +12,9 @@ class meleeDPS:
     TargetDefLvl = 0
     TargetStyleDef = 0
     WepSpeed_Ticks = 0
+    UsingSalve = False
+    UsingVoid = False
+    UsingSlayHelm = False
 
     def CalcMaxHit(self):
         prayerMultiplier = 0
@@ -45,7 +48,15 @@ class meleeDPS:
 
         effStrLvl = math.floor((self.StrLvl + PotionBonus) * prayerMultiplier) + CombatStyleBonus + 8
 
+        if(self.UsingVoid == True):
+            effStrLvl = effStrLvl * 1.1
+
         maxHit = math.floor(((effStrLvl * (64 + self.GearStrBonus)) + 320) / 640)
+
+        if(self.UsingSalve == True):
+            maxHit = math.floor(maxHit * 1.2)
+        elif(self.UsingSlayHelm == True):
+            maxHit = math.floor(maxHit * 1.1667)
 
         return(maxHit)
 
@@ -82,10 +93,18 @@ class meleeDPS:
         tempAtkLvl = math.floor((self.AtkLvl + PotionBonus) * prayerMultiplier)
         effAtkLvl = math.floor(tempAtkLvl + CombatStyleBonus + 8)
 
+        if(self.UsingVoid == True):
+            effAtkLvl = effAtkLvl * 1.1
+
         return(effAtkLvl)
 
     def CalcAtkRoll(self):
         temp = self.CalcEffAttkLvl() * (self.GearAtkBonus + 64)
+        if(self.UsingSalve == True):
+            temp = temp * 1.2
+        elif(self.UsingSlayHelm == True):
+            temp = temp * 1.1667
+
         return(math.floor(temp))
 
     def CalcTargetDefRoll(self):
@@ -120,6 +139,9 @@ myMeleeClass.GearAtkBonus = 100
 myMeleeClass.TargetStyleDef = 100
 myMeleeClass.TargetDefLvl = 0
 myMeleeClass.WepSpeed_Ticks = 4
+myMeleeClass.UsingSalve = False
+myMeleeClass.UsingVoid = False
+myMeleeClass.UsingSlayHelm = False
 
 print(meleeDPS.CalcMaxHit(myMeleeClass))
 print(meleeDPS.CalcEffAttkLvl(myMeleeClass))
